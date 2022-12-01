@@ -13,7 +13,7 @@ void findWaitingTimeRR(ProcessType plist[], int n,int quantum)
   
     //  1. Create an array *rem_bt[]* to keep track of remaining burst time of processes. This array is initially a copy of *plist[].bt* (all processes burst times)
     int *rem_bt = malloc(n * sizeof(int));
-    for (int i = 0;  i < n; ++i) {
+    for (int i = 0;  i < n; i++) {
     //   2. Store waiting times of processes in plist[].wt. Initialize this array as 0.
       rem_bt[i] = plist[i].bt;
       plist[i].wt = 0;
@@ -24,7 +24,7 @@ void findWaitingTimeRR(ProcessType plist[], int n,int quantum)
     int allProcesses = 0;
     //  4. Keep traversing the all processes while all processes are not done. Do following for i'th process if it is not done yet.
     while (allProcesses < n){
-      for (int i = 0; i < n; ++i){
+      for (int i = 0; i < n; i++){
         if(rem_bt[i] != 0){
           // - If rem_bt[i] > quantum
           if(rem_bt[i] > quantum){
@@ -42,12 +42,12 @@ void findWaitingTimeRR(ProcessType plist[], int n,int quantum)
             plist[i].wt = t - plist[i].bt;
             // (iii) bt_rem[i] = 0; // This process is over
             rem_bt[i] = 0;
-            ++allProcesses;
+            allProcesses++;
           }
         }
       }    
     }
-    for (int i = 0;  i < n; ++i) {
+    for (int i = 0;  i < n; i++) {
       plist[i].tat = plist[i].wt + plist[i].bt;
     } 
     free(rem_bt);
@@ -80,8 +80,7 @@ void findWaitingTimeSJF(ProcessType plist[], int n)
 	while (allProcesses < n) {
        int smallest = -1;
        int time = INT_MAX;
-       for (int i = 0; i < n; ++i) {
-         // min remaining time and process is not complete and process has arrived
+       for (int i = 0; i < n; i++) {
          if (temp[i] < time && completion_time[i] == -1 && plist[i].art <= count) {
            smallest = i;
            time = temp[i];
@@ -90,13 +89,13 @@ void findWaitingTimeSJF(ProcessType plist[], int n)
        
        temp[smallest] -= 1;
        if (temp[smallest] == 0) {
-         ++allProcesses;
+         allProcesses++;
          completion_time[smallest] = count + 1;
        }
-       ++count;
+       count++;
      }
   
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n;i++) {
       plist[i].wt = completion_time[i] - plist[i].art - plist[i].bt;
     }
     free(completion_time);
